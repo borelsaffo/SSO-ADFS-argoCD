@@ -92,3 +92,78 @@ Redirection ADFS ne fonctionne pas	Vérifiez les URI de redirection dans ADFS
 Aucune réponse de ADFS	Testez https://ADFS_DOMAIN/adfs/.well-known/openid-configuration
 Erreur d’authentification	Vérifiez clientID et clientSecret
 Pas de bouton de login ADFS	Vérifiez le oidc.config dans argocd-cm
+
+---
+🔐 Étape 1 : Activer mTLS dans Istio (Authentification)
+C'est ce que tu fais déjà, mais pour être complet :
+
+yaml
+Copier
+Modifier
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: my-namespace
+spec:
+  mtls:
+    mode: STRICT
+Cela oblige tous les pods dans ce namespace à utiliser mTLS. Cela assure l’identité du client (authentification mutuelle entre proxies).
+
+🪪 Étape 2 : Keycloak émet des JWT (OAuth2 / OIDC)
+Crée un realm dans Keycloak.
+
+Crée un client (confidential ou public).
+
+Les clients de ton mesh (ex : les frontends, ou API-gateway) doivent s’authentifier auprès de Keycloak pour obtenir un JWT.
+
+Ce JWT est ensuite envoyé avec chaque requête HTTP, dans le header Authorization: Bearer <token>.
+
+🛡️ Étape 3 : Istio valide les JWT (et fait l'autorisation)
+Tu vas utiliser les ressources RequestAuthentication et AuthorizationPolicy.
+
+1. RequestAuthentication : pour dire à Istio comment vérifier les JWT
+yaml
+Copier
+Modifier
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-keycloak
+  namespace: my-namespace
+spec:
+  selector:
+    matchLabels:
+      app: my-api
+  jwtRules:
+    - issuer: "https://keycloak.example.com/realms/myrealm"
+      jwksUri: "https://keycloak.example.com/realms/myrealm/protocol/openid-connect/certs"
+2. AuthorizationPolicy : pour contrôler l’accès selon les claims
+Exemple : autoriser uniquement les utilisateurs avec le rôle admin dans le realm.
+
+yaml
+Copier
+Modifier
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-admins
+  namespace: my-namespace
+spec:
+  selector:
+    matchLabels:
+      app: my-api
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            requestPrincipals: ["https://keycloak.example.com/realms/myrealm/*"]
+      when:
+        - key: request.auth.claims[realm_access].roles
+          values: ["admin"]
+🧠 Résumé
+Cible	Solution
+Authentification mutuelle	Istio + mTLS (identité de service)
+Authentification utilisateur	JWT signé par Keycloak
+Autorisation	AuthorizationPolicy basée sur les claims JWT
+Avantage	Tu n’as pas besoin d’ajouter de lib auth dans tes apps
