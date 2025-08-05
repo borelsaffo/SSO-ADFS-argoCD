@@ -250,3 +250,58 @@ data:
     # Associer un utilisateur au rôle
     g, john.doe@example.com, role:custom-admin
 
+# Limitation a un cluster
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  # Rôle par défaut : lecture seule
+  policy.default: role:readonly
+
+  policy.csv: |
+    # Définir le rôle "deployer-kube1" avec droits limités
+    p, role:deployer-kube1, applications, get, *, allow
+    p, role:deployer-kube1, applications, create, *, allow
+    p, role:deployer-kube1, applications, update, *, allow
+    p, role:deployer-kube1, applications, delete, *, allow
+    p, role:deployer-kube1, applications, sync, *, allow
+    p, role:deployer-kube1, applications, override, *, allow
+    p, role:deployer-kube1, clusters, get, https://10.0.0.1:6443, allow
+    p, role:deployer-kube1, repositories, get, *, allow
+    p, role:deployer-kube1, logs, get, *, allow
+
+    # Limiter la création aux applications déployées sur le cluster kube1
+    p, role:deployer-kube1, applications, create, *, allow
+    p, role:deployer-kube1, applications, sync, *, allow
+    p, role:deployer-kube1, applications, override, *, allow
+    p, role:deployer-kube1, applications, update, *, allow
+
+    # Restreindre aux applications qui ciblent ce cluster
+    p, role:deployer-kube1, applications, *, *, allow, obj.cluster == "https://10.0.0.1:6443"
+
+    # Associer un utilisateur à ce rôle
+    g, jane.doe@example.com, role:deployer-kube1
+
+#  Si on a des users dans un groupe Dev au niveau de ADFS, on peut restreindre les droits a ces users
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:readonly
+
+  policy.csv: |
+    # Rôle dev limité (pas d'accès aux projets)
+    p, role:dev-limited, applications, get, *, allow
+    p, role:dev-limited, applications, list, *, allow
+    p, role:dev-limited, applications, create, *, allow
+    p, role:dev-limited, applications, sync, *, allow
+    p, role:dev-limited, logs, get, *, allow
+
+    # Ne PAS mettre de règle sur "projects", donc pas de droit de créer
+    # Associer le groupe ADFS "dev" à ce rôle
+    g, dev, role:dev-limited
