@@ -93,29 +93,12 @@ Aucune réponse de ADFS	Testez https://ADFS_DOMAIN/adfs/.well-known/openid-confi
 Erreur d’authentification	Vérifiez clientID et clientSecret
 Pas de bouton de login ADFS	Vérifiez le oidc.config dans argocd-cm
 
----
-🔐 Étape 1 : Activer mTLS dans Istio (Authentification)
-C'est ce que tu fais déjà, mais pour être complet :
+<img width="587" height="72" alt="image" src="https://github.com/user-attachments/assets/ac36a808-0f4c-44d1-a265-c3dc03b1d621" />
 
-yaml
-Copier
-Modifier
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: default
-  namespace: my-namespace
-spec:
-  mtls:
-    mode: STRICT
-Cela oblige tous les pods dans ce namespace à utiliser mTLS. Cela assure l’identité du client (authentification mutuelle entre proxies).
+Les Erreur possibles:
+- Flux fermé entre ArgoCD et ADFS:   vous avez un timeout
+  Failed to query provider "https://adfs.grt.vva/adfs": Get "https://adfs.grt.vva/adfs/.well-known/openid-configuration": dial tcp 10.2D.1o.0:443: i/o timeout
+- Problème de certificat: Rajouter la CA de votre entité a la suite de la configuration de l'OIDC
 
-🪪 Étape 2 : Keycloak émet des JWT (OAuth2 / OIDC)
-Crée un realm dans Keycloak.
-
-Crée un client (confidential ou public).
-
-Les clients de ton mesh (ex : les frontends, ou API-gateway) doivent s’authentifier auprès de Keycloak pour obtenir un JWT.
-
-Ce JWT est ensuite envoyé avec chaque requête HTTP, dans le header Authorization: Bearer <token>.
+# Pour la Gestion des permissions:
 
