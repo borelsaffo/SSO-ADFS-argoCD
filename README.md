@@ -193,4 +193,12 @@ p, user:john.doe@example.com, projects, get, *, allow
 - Créer un **rôle nommé** et y associer des groupes avec la directive `g, group, role:nom`.
 - Étendre les permissions si nécessaire (par ex. accès aux logs via RBAC Kubernetes).
 
+data:
+  policy.csv: |
+    p, user:john.doe@example.com, applications, get, XX/*, allow
+    p, user:john.doe@example.com, applications, create, XX/*, allow
+    p, user:john.doe@example.com, applications, update, XX/*, allow
+    p, user:john.doe@example.com, applications, delete, XX/*, allow
+    p, user:john.doe@example.com, clusters, get, *, allow
+    p, user:john.doe@example.com, projects, get, *, allow
 
