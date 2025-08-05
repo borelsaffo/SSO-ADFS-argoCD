@@ -204,6 +204,7 @@ data:
 
 <img width="495" height="187" alt="image" src="https://github.com/user-attachments/assets/68a16b1c-534b-4070-aa08-3ebece41d0a6" />
 
+# Projet admin
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -227,4 +228,25 @@ data:
 
     # Associer un utilisateur au rôle
     g, john.doe@example.com, role:project-admin
+
+
+# Full Admin
+
+-----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  # Rôle par défaut (lecture seule pour les autres utilisateurs)
+  policy.default: role:readonly
+
+  # Définition des règles RBAC
+  policy.csv: |
+    # Rôle full admin
+    p, role:custom-admin, *, *, *, allow
+
+    # Associer un utilisateur au rôle
+    g, john.doe@example.com, role:custom-admin
 
