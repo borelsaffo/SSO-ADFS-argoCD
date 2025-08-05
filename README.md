@@ -87,18 +87,20 @@ S’authentifier avec ADFS
 Redirection vers Argo CD avec accès selon le groupe configuré
 
 🧪 Test & Dépannage
+
 Problème	Solution
 Redirection ADFS ne fonctionne pas	Vérifiez les URI de redirection dans ADFS
 Aucune réponse de ADFS	Testez https://ADFS_DOMAIN/adfs/.well-known/openid-configuration
 Erreur d’authentification	Vérifiez clientID et clientSecret
 Pas de bouton de login ADFS	Vérifiez le oidc.config dans argocd-cm
 
-<img width="587" height="72" alt="image" src="https://github.com/user-attachments/assets/ac36a808-0f4c-44d1-a265-c3dc03b1d621" />
+
 
 Les Erreur possibles:
 - Flux fermé entre ArgoCD et ADFS:   vous avez un timeout
   Failed to query provider "https://adfs.grt.vva/adfs": Get "https://adfs.grt.vva/adfs/.well-known/openid-configuration": dial tcp 10.2D.1o.0:443: i/o timeout
 - Problème de certificat: Rajouter la CA de votre entité a la suite de la configuration de l'OIDC
+<img width="587" height="115" alt="image" src="https://github.com/user-attachments/assets/f6dc0d30-b322-4dba-b6ff-7fbe2f8f4604" />
 
-# Pour la Gestion des permissions:
+# Pour la Gestion des permissions: modifier la configmap  argocd-rbac-cm
 
