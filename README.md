@@ -305,3 +305,32 @@ data:
     # Ne PAS mettre de règle sur "projects", donc pas de droit de créer
     # Associer le groupe ADFS "dev" à ce rôle
     g, dev, role:dev-limited
+
+
+
+# Role admin complet explicite
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:readonly
+
+  policy.csv: |
+    # Rôle admin complet explicite
+    p, role:custom-admin, applications, *, *, allow
+    p, role:custom-admin, projects, *, *, allow
+    p, role:custom-admin, clusters, *, *, allow
+    p, role:custom-admin, repositories, *, *, allow
+    p, role:custom-admin, logs, get, *, allow
+    p, role:custom-admin, exec, create, *, allow
+    p, role:custom-admin, accounts, get, *, allow
+    p, role:custom-admin, certificates, *, *, allow
+    p, role:custom-admin, settings, *, *, allow
+
+    # Associer l’utilisateur au rôle
+    g, john.doe@example.com, role:custom-admin
+
+
+ La ligne générique p, role:custom-admin, *, *, *, allow ne couvre pas toujours tout, selon certaines versions ou configurations d’Argo CD. Donc ajoute explicitement les règles projects.
