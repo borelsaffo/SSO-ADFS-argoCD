@@ -203,3 +203,28 @@ data:
     p, user:john.doe@example.com, projects, get, *, allow
 
 <img width="495" height="187" alt="image" src="https://github.com/user-attachments/assets/68a16b1c-534b-4070-aa08-3ebece41d0a6" />
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  # Rôle par défaut : lecture seule
+  policy.default: role:readonly
+
+  # Définition des rôles et permissions
+  policy.csv: |
+    # Rôle personnalisé pour la gestion des projets et applications
+    p, role:project-admin, applications, *, *, allow
+    p, role:project-admin, projects, *, *, allow
+    p, role:project-admin, clusters, get, *, allow
+    p, role:project-admin, repositories, get, *, allow
+    p, role:project-admin, repositories, list, *, allow
+    p, role:project-admin, logs, get, *, allow
+    p, role:project-admin, exec, create, *, allow
+
+    # Associer un utilisateur au rôle
+    g, john.doe@example.com, role:project-admin
+
