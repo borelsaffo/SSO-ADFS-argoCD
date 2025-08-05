@@ -104,3 +104,93 @@ Les Erreur possibles:
 
 # Pour la Gestion des permissions: modifier la configmap  argocd-rbac-cm
 
+# 📄 Explication du fichier `policy.csv` pour Argo CD RBAC
+
+Ce document explique en détail la configuration suivante de `policy.csv` utilisée pour restreindre les permissions d’un utilisateur dans Argo CD.
+
+---
+
+## 🔐 Contexte
+
+Dans Argo CD, la **configMap `argocd-rbac-cm`** permet de définir des **politiques d’accès** pour les utilisateurs (authentifiés via SSO comme ADFS). Ces règles définissent **qui** peut faire **quoi**, **sur quoi**, et **où**.
+
+La syntaxe d'une ligne dans `policy.csv` est :
+
+```
+p, sujet, action, objet, ressource, effet
+```
+
+---
+
+## 🧾 Analyse ligne par ligne
+
+```yaml
+p, user:john.doe@example.com, applications, get, XX/*, allow
+```
+- ✅ Autorise l'utilisateur `john.doe@example.com` à **lire les applications** dans le namespace logique (Argo CD app) `XX`.
+
+---
+
+```yaml
+p, user:john.doe@example.com, applications, create, XX/*, allow
+```
+- ✅ Autorise la **création d'applications Argo CD** dans le namespace `XX`.
+
+---
+
+```yaml
+p, user:john.doe@example.com, applications, update, XX/*, allow
+```
+- ✅ Autorise la **modification des applications** existantes dans le namespace `XX`.
+
+---
+
+```yaml
+p, user:john.doe@example.com, applications, delete, XX/*, allow
+```
+- ✅ Autorise la **suppression d'applications** dans le namespace `XX`.
+
+---
+
+```yaml
+p, user:john.doe@example.com, clusters, get, *, allow
+```
+- ✅ Autorise l'accès **en lecture seule aux clusters** connectés à Argo CD.
+
+---
+
+```yaml
+p, user:john.doe@example.com, projects, get, *, allow
+```
+- ✅ Autorise la lecture des **projets Argo CD**.
+
+---
+
+## ✅ Résumé des permissions
+
+| Action     | Ressource     | Portée                 |
+|------------|----------------|-------------------------|
+| Lire       | Applications    | Namespace `XX`         |
+| Créer      | Applications    | Namespace `XX`         |
+| Modifier   | Applications    | Namespace `XX`         |
+| Supprimer  | Applications    | Namespace `XX`         |
+| Lire       | Clusters        | Tous                   |
+| Lire       | Projets         | Tous                   |
+
+---
+
+## 🔒 Limitations
+
+- L'utilisateur **n’a pas accès aux autres namespaces** que `XX`.
+- Il **ne peut pas gérer** les clusters ni les projets (seulement lecture).
+- Il **peut uniquement gérer des applications** dans `XX`.
+
+---
+
+## 🛠 Suggestions supplémentaires
+
+- Utiliser un **groupe AD** au lieu d’un utilisateur pour une gestion centralisée.
+- Créer un **rôle nommé** et y associer des groupes avec la directive `g, group, role:nom`.
+- Étendre les permissions si nécessaire (par ex. accès aux logs via RBAC Kubernetes).
+
+
