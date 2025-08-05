@@ -3,6 +3,9 @@
 
 Ce guide explique comment configurer l’authentification Single Sign-On (SSO) dans **Argo CD** en utilisant **ADFS** (Active Directory Federation Services) comme **fournisseur OIDC**.
 
+ bK8mteKd6HOSlEc0NfYoEwA+IbG8E/0QEtRRWTAkEQs=
+
+
 ---
 
 ## 🧩 Prérequis
