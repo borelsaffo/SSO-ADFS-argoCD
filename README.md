@@ -397,3 +397,9 @@ p, role:admin, exec, create, */*, allow
 
 g, role:admin, role:readonly
 g, admin, role:admin
+
+
+
+https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-rbac-cm-yaml/
+
+https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/
