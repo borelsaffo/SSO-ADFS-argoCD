@@ -334,3 +334,11 @@ data:
 
 
  La ligne générique p, role:custom-admin, *, *, *, allow ne couvre pas toujours tout, selon certaines versions ou configurations d’Argo CD. Donc ajoute explicitement les règles projects.
+
+
+
+#
+
+  policy.default: role:readonly
+  policy.matchMode: glob
+  scopes: '[groups]'
