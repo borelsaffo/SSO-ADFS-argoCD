@@ -202,3 +202,4 @@ data:
     p, user:john.doe@example.com, clusters, get, *, allow
     p, user:john.doe@example.com, projects, get, *, allow
 
+<img width="495" height="187" alt="image" src="https://github.com/user-attachments/assets/68a16b1c-534b-4070-aa08-3ebece41d0a6" />
