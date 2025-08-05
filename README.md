@@ -423,3 +423,18 @@ data:
   accounts.alice: apiKey, login
   # disables user. User is enabled by default
   accounts.alice.enabled: "false"
+
+
+
+#
+
+l=grpc
+time="2025-08-05T13:05:27Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: failed to verify the token" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:27Z" grpc.time_ms=0.964 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:27Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: failed to verify the token" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:27Z" grpc.time_ms=1.123 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:28Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: token has invalid claims: token is expired" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:28Z" grpc.time_ms=0.246 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:28Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: token has invalid claims: token is expired" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:28Z" grpc.time_ms=0.178 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:28Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: failed to verify the token" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:28Z" grpc.time_ms=1.112 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:28Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: failed to verify the token" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:28Z" grpc.time_ms=0.971 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:29Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: token has invalid claims: token is expired" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:29Z" grpc.time_ms=0.227 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:29Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: token has invalid claims: token is expired" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:29Z" grpc.time_ms=0.223 peer.address="[::1]:58692" protocol=grpc
+time="2025-08-05T13:05:29Z" level=info msg="finished call" grpc.code=Unauthenticated grpc.component=server grpc.error="rpc error: code = Unauthenticated desc = invalid session: failed to verify the token" grpc.method=PodLogs grpc.method_type=server_stream grpc.service=application.ApplicationService grpc.start_time="2025-08-05T13:05:29
